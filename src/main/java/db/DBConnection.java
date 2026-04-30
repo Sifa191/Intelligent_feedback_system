@@ -10,7 +10,7 @@ public class DBConnection {
         Connection con = null;
 
         try {
-            System.out.println("🔄 Trying to connect...");
+            
 
             Class.forName("com.mysql.cj.jdbc.Driver");
 
@@ -20,10 +20,10 @@ public class DBConnection {
 
             con = DriverManager.getConnection(url, user, password);
 
-            System.out.println("✅ Database Connected Successfully");
+            //System.out.println("✅ Database Connected Successfully");
 
         } catch (Exception e) {
-            System.out.println("❌ DB CONNECTION ERROR:");
+            //System.out.println("❌ DB CONNECTION ERROR:");
             e.printStackTrace();   // VERY IMPORTANT
         }
 

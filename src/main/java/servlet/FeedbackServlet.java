@@ -40,7 +40,7 @@ public class FeedbackServlet extends HttpServlet {
         try {
             Connection con = DBConnection.getConnection();
 
-            String query = "INSERT INTO feedback (student_id,faculty,subject,feedback_text,sentiment,date) VALUES (?,?,?,?,?, NOW())";
+            String query = "INSERT INTO feedback (student_id,faculty,subject,feedback_text,sentiment,issue,date) VALUES (?,?,?,?,?,?, NOW())";
             PreparedStatement ps = con.prepareStatement(query);
 
             ps.setInt(1, studentId);
@@ -48,6 +48,7 @@ public class FeedbackServlet extends HttpServlet {
             ps.setString(3, subject);
             ps.setString(4, cleanedFeedback);
             ps.setString(5, sentiment);
+            ps.setString(6,  issue);
 
             ps.executeUpdate();
 

@@ -122,6 +122,7 @@ function searchTable() {
                 <th>Faculty</th>
                 <th>Subject</th>
                 <th>Feedback</th>
+                <th>issue</th>
                 <th>Date</th>
             </tr>
         </thead>
@@ -147,6 +148,7 @@ function searchTable() {
                 <td><%= rs.getString("faculty") %></td>
                 <td><%= rs.getString("subject") %></td>
                 <td><%= rs.getString("feedback_text") %></td>
+                <td><%= rs.getString("issue") %></td>
                 <td><%= rs.getString("date") %></td>
             </tr>
 

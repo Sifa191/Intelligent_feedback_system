@@ -1,6 +1,7 @@
 <%@ page contentType="text/html; 
 charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.sql.*" %>
+<%@ page import="java.util.*" %>
 <%@ page import="db.DBConnection" %>
 
 <%
@@ -111,6 +112,9 @@ body {
 
 <%
 int total = 0, positive = 0, negative = 0, neutral = 0;
+Map<String, Integer> issueCount=new HashMap<>();
+List<Map.Entry<String, Integer>>
+sortedIssues=new ArrayList<>();
 
 try {
     Connection con = DBConnection.getConnection();
@@ -126,7 +130,17 @@ try {
 
     ResultSet rs4 = con.createStatement().executeQuery("SELECT COUNT(*) FROM feedback WHERE sentiment='Neutral'");
     if(rs4.next()) neutral = rs4.getInt(1);
-
+    
+    ResultSet rsIssue=con.createStatement().executeQuery("SELECT issue from feedback");
+    	while(rsIssue.next()){
+    		String issue=rsIssue.getString(1);
+    		
+    		if(issue!=null && !issue.trim().isEmpty()){
+    			issueCount.put(issue,issueCount.getOrDefault(issue, 0)+ 1);
+    		}
+    	}
+    	sortedIssues=new ArrayList<>(issueCount.entrySet());
+    	Collections.sort(sortedIssues, (a, b) -> b.getValue() - a.getValue());
 } catch(Exception e) {
     out.println(e);
 }
@@ -209,6 +223,29 @@ new Chart(ctx, {
 </script>
 
 <br><br>
+
+<!-- 🔥 ADD THIS HERE -->
+<h2 style="color:red;">⚠ Top Problems (Issue Identification)</h2>
+
+<div style="margin-top:20px;">
+
+<%
+int limit = Math.min(3, sortedIssues.size());
+
+for(int i=0; i<limit; i++){
+    String issue = sortedIssues.get(i).getKey();
+    int count = sortedIssues.get(i).getValue();
+%>
+
+<div style="background:#ffe6e6; padding:15px; margin-bottom:10px; border-radius:10px;">
+    <b><%= issue %></b><br>
+    <span><%= count %> complaints</span>
+</div>
+
+<%
+}
+%>
+</div>
 
 <!-- 🔷 BUTTON -->
 <a href="viewFeedback.jsp">
